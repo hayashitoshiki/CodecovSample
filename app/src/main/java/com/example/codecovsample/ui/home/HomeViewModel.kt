@@ -6,8 +6,14 @@ import androidx.lifecycle.ViewModel
 
 class HomeViewModel : ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is home Fragment"
-    }
+    private val _text = MutableLiveData<String>()
     val text: LiveData<String> = _text
+
+    fun get1(): Int {
+        return 1
+    }
+
+    fun get2() : Int {
+        return 2
+    }
 }

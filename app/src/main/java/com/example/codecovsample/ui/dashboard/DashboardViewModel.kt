@@ -10,4 +10,12 @@ class DashboardViewModel : ViewModel() {
         value = "This is dashboard Fragment"
     }
     val text: LiveData<String> = _text
+
+    fun getStringTest(): String {
+        return "Test"
+    }
+
+    fun getStringNon() : String {
+        return "Non"
+    }
 }
