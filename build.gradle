@@ -22,6 +22,82 @@ allprojects {
     }
 }
 
+subprojects {
+    switch (project.name) {
+        case 'app':
+            apply plugin: 'com.android.application'
+            break
+        default:
+            apply plugin: 'com.android.library'
+            break
+    }
+
+    android {
+        buildTypes {
+            debug {
+                proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+                testCoverageEnabled true
+            }
+            release {
+                minifyEnabled false
+                proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            }
+        }
+    }
+}
+
+apply plugin: "jacoco"
+
+jacoco {
+    toolVersion = "0.8.7"
+}
+
+// 全プロジェクトのカバレッジ取得
+task jacocoMergeReports(type: JacocoMerge) {
+    group = 'verification'
+    description = "Merge all JaCoCo reports from projects into one."
+
+    gradle.afterProject { p, state ->
+        if (p.rootProject != p && p.plugins.hasPlugin('jacoco')) {
+            if (p.name != "document" && p.name != "ChatMemo") {
+                dependsOn "${p.path}:createDebugCoverageReport"
+                dependsOn "${p.path}:testDebugUnitTest"
+                executionData "${p.buildDir}/jacoco/testDebugUnitTest.exec"
+            }
+        }
+    }
+}
+
+// マージされたカバレッジ取得
+task jacocoTestReports(type: JacocoReport, dependsOn: 'jacocoMergeReports') {
+    group = 'verification'
+    description = "Generate Jacoco coverage reports for the build. Only unit tests."
+
+    executionData jacocoMergeReports.destinationFile
+
+    getSourceDirectories().setFrom(files())
+    getClassDirectories().setFrom(files())
+
+    gradle.afterProject { p, state ->
+        if (p.rootProject != p && p.plugins.hasPlugin('jacoco')) {
+            if (p.name != "document" && p.name != "ChatMemo") {
+                getSourceDirectories().from += "${p.projectDir}/src/main/java"
+                getClassDirectories().from += p.fileTree(dir: "${p.buildDir}/tmp/kotlin-classes/debug")
+                getExecutionData().setFrom(fileTree(dir: project.projectDir, includes: [
+                        '**/*.exec',    //JUnit Test Result
+                        '**/*.ec'])     //Espresso Test Result
+                )
+            }
+        }
+    }
+
+    reports {
+        xml.enabled true
+        html.enabled true
+        csv.enabled false
+    }
+}
+
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
