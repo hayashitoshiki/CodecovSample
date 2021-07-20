@@ -60,7 +60,7 @@ task jacocoMergeReports(type: JacocoMerge) {
     gradle.afterProject { p, state ->
         if (p.rootProject != p && p.plugins.hasPlugin('jacoco')) {
             if (p.name != "document" && p.name != "ChatMemo") {
-                dependsOn "${p.path}:createDebugCoverageReport"
+//                dependsOn "${p.path}:createDebugCoverageReport"
                 dependsOn "${p.path}:testDebugUnitTest"
                 executionData "${p.buildDir}/jacoco/testDebugUnitTest.exec"
             }
