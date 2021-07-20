@@ -6,42 +6,33 @@ env:
   # 実行する Gradle コマンド(今回は最小限にUnit Testのみ)
   GRADLE_UNIT_TEST_TASK: 'test --stacktrace'
 
-  check:
-    name: Check pull request
-    runs-on: ubuntu-18.04 # Java や Ruby を利用するので念の為、環境を固定
+jobs:
+  test:
+    runs-on: ubuntu-latest
     steps:
-      - name: Check out
-        uses: actions/checkout@v2
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
-      - name: Set up JDK
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
-      - name: Restore gradle cache # Gradle のキャッシュをリストア
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle', '**/*.gradle.kts') }}
-      - name: Set up Ruby # gem を利用するので Ruby をセットアップ
-        uses: actions/setup-ruby@v1
-        with:
-          ruby-version: '2.6'
-      - name: Get gem info
-        env: # Danger で利用する gem をここで列挙
-          PACKAGES: danger:6.2.0 danger-checkstyle_format:0.1.1 danger-android_lint:0.0.8 danger-junit:1.0.0
-        id: gem-info
-        run: |
-          echo "::set-output name=dir::$(gem environment gemdir)" # キャッシュするgemのディレクトリ
-          echo "::set-output name=packages::$PACKAGES" # install 用の文字列
-          echo "::set-output name=key::$(echo $PACKAGES | tr ' ' '-')" # キャッシュのキー文字列
-      - name: Restore gem cache # gem のキャッシュをリストア
-        uses: actions/cache@v2
-        with:
-          path: ${{ steps.gem-info.outputs.dir }}
-          key: ${{ runner.os }}-gem-${{ steps.gem-info.outputs.key }}
+    # チェックアウト
+    - uses: actions/checkout@v2
+
+    # JDKのセットアップ
+    - name: set up JDK 1.8
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+
+    # Gradleのキャッシュ復元
+    - uses: actions/cache@v2
+      with:
+        path: ~/.gradle/caches
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-
+    # 依存関係の出力
+    - name: Displays the Android dependencies of the project
+      run: ./gradlew androidDependencies
+
+    # コンパイル
+    - name: Run Compile
+      run: ./gradlew assembleDebug
 
     # テスト
     - name: Test with Gradle
