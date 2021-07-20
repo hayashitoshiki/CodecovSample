@@ -21,4 +21,8 @@ class DashboardViewModel : ViewModel() {
     fun testBranch1() {
 
     }
+
+    fun testBranch2() {
+
+    }
 }
