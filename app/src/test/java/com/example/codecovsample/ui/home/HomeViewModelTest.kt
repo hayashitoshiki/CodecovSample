@@ -21,4 +21,9 @@ class HomeViewModelTest : TestCase() {
         val result = viewModel.get2()
         assertEquals(2, result)
     }
+
+    fun testGet3() {
+        val result = viewModel.get3()
+        assertEquals(3, result)
+    }
 }
