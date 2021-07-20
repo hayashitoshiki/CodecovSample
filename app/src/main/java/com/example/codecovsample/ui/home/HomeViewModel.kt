@@ -18,6 +18,6 @@ class HomeViewModel : ViewModel() {
     }
 
     fun get3() : Int {
-        return 2
+        return 3
     }
 }
