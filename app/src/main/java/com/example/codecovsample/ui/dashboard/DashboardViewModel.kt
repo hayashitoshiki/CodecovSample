@@ -18,4 +18,7 @@ class DashboardViewModel : ViewModel() {
     fun getStringNon() : String {
         return "Non"
     }
+    fun testBranch1() {
+
+    }
 }
