@@ -17,6 +17,8 @@ jobs:
     steps:
     # チェックアウト
     - uses: actions/checkout@v2
+    - with:
+        fetch-depth: 0
 
     # JDKのセットアップ
     - name: set up JDK 1.8
