@@ -30,6 +30,13 @@ jobs:
     - name: Displays the Android dependencies of the project
       run: ./gradlew androidDependencies
 
+    # エミュレータ立ち上げ
+    - name: run tests
+      uses: reactivecircus/android-emulator-runner@v2
+      with:
+         api-level: 29
+         script: ./gradlew connectedCheck
+
     # コンパイル
     - name: Run Compile
       run: ./gradlew assembleDebug
