@@ -30,6 +30,8 @@ class HomeViewModel : ViewModel() {
     fun get5(): Int {
         if (a == 2) {
             return 5
+        } else if (a == 1) {
+            return 1
         } else {
             return 3
         }
