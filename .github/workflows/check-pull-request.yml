@@ -8,7 +8,12 @@ env:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    # runs-on: ubuntu-latest
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        api-level: [21, 23, 29]
+        target: [default, google_apis]
     steps:
     # チェックアウト
     - uses: actions/checkout@v2
@@ -31,11 +36,12 @@ jobs:
       run: ./gradlew androidDependencies
 
     # エミュレータ立ち上げ
-    - name: run tests
+    - name: run Android Emulater stand tests
       uses: reactivecircus/android-emulator-runner@v2
       with:
-         api-level: 29
-         script: ./gradlew connectedCheck
+        api-level: 29
+        arch: x86_64
+        script: ./gradlew app:connectedDebugAndroidTest --stacktrace
 
     # コンパイル
     - name: Run Compile
