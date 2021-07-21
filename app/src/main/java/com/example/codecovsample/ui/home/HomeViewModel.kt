@@ -20,4 +20,8 @@ class HomeViewModel : ViewModel() {
     fun get3() : Int {
         return 3
     }
+
+    fun get4() : Int {
+        return 4
+    }
 }
