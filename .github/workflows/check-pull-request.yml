@@ -36,12 +36,12 @@ jobs:
       run: ./gradlew androidDependencies
 
     # エミュレータ立ち上げ
-    - name: run Android Emulater stand tests
-      uses: reactivecircus/android-emulator-runner@v2
-      with:
-        api-level: 29
-        arch: x86_64
-        script: ./gradlew app:connectedDebugAndroidTest --stacktrace
+#     - name: run Android Emulater stand tests
+#       uses: reactivecircus/android-emulator-runner@v2
+#       with:
+#         api-level: 29
+#         arch: x86_64
+#         script: ./gradlew app:connectedDebugAndroidTest --stacktrace
 
     # コンパイル
     - name: Run Compile
@@ -53,7 +53,11 @@ jobs:
 
     # コードカバレッジをJaCoCo形式で取得
     - name: Get code coverage for JaCoCo
-      run: ./gradlew jacocoTestReports
+      uses: reactivecircus/android-emulator-runner@v2
+      with:
+        api-level: 29
+        arch: x86_64
+        script: ./gradlew jacocoTestReports
 
     # コードカバレッジをCodecovへアップロード
     - name: Upload code coverage to Codecov
