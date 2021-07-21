@@ -26,4 +26,9 @@ class HomeViewModelTest : TestCase() {
         val result = viewModel.get3()
         assertEquals(3, result)
     }
+
+    fun testGet5Ptn1() {
+        val result = viewModel.get5()
+        assertEquals(5, result)
+    }
 }
