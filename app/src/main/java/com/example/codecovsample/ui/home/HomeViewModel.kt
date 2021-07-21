@@ -9,6 +9,8 @@ class HomeViewModel : ViewModel() {
     private val _text = MutableLiveData<String>()
     val text: LiveData<String> = _text
 
+    var a = 2
+
     fun get1(): Int {
         return 1
     }
@@ -23,5 +25,13 @@ class HomeViewModel : ViewModel() {
 
     fun get4() : Int {
         return 4
+    }
+
+    fun get5(): Int {
+        if (a == 2) {
+            return 5
+        } else {
+            return 3
+        }
     }
 }
