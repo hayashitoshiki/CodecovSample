@@ -14,7 +14,7 @@ android.applicationVariants.all { variant ->
 
     task("jacoco${variantName}TestReport", type: JacocoReport) {
         //AndroidTest後にUnitTestの内容をマージします。
-//        dependsOn "create${variantName}CoverageReport"
+        dependsOn "create${variantName}CoverageReport"
         dependsOn "test${variantName}UnitTest"
         group = "verification"
         description = "Generate Jacoco coverage reports for ${realVariantName}"
