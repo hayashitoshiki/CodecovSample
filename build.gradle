@@ -42,6 +42,10 @@ subprojects {
                 proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             }
         }
+        buildFeatures {
+            dataBinding true
+            viewBinding true
+        }
     }
 }
 
