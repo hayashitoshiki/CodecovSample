@@ -32,6 +32,9 @@ subprojects {
             break
     }
 
+    apply plugin: 'kotlin-android'
+    apply plugin: 'kotlin-kapt'
+
     android {
         buildTypes {
             debug {
@@ -42,6 +45,39 @@ subprojects {
                 proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             }
         }
+        lintOptions {
+            checkReleaseBuilds false
+            // Or, if you prefer, you can continue to check for errors in release builds,
+            // but continue the build even when errors are found:
+            abortOnError false
+            xmlReport true
+        }
+    }
+    configurations { ktlint }
+
+    afterEvaluate {
+        check.dependsOn ktlint
+    }
+    dependencies {
+        // ktlint
+        ktlint "com.pinterest:ktlint:0.41.0"
+    }
+
+
+    task ktlint(type: JavaExec, group: "verification") {
+        description = "Check Kotlin code style."
+        main = "com.pinterest.ktlint.Main"
+        classpath = configurations.ktlint
+        args "--android", "--color", "--reporter=plain", "--reporter=checkstyle,output=${buildDir}/reports/ktlint-results.xml", "src/**/*.kt"
+        ignoreExitValue true
+    }
+
+    task ktlintFormat(type: JavaExec, group: "formatting") {
+        description = "Fix Kotlin code style deviations."
+        main = "com.pinterest.ktlint.Main"
+        classpath = configurations.ktlint
+        args "-F", "--android", "src/**/*.kt"
+        ignoreExitValue true
     }
 }
 
