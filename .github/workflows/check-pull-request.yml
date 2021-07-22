@@ -8,12 +8,12 @@ env:
 
 jobs:
   test:
-    # runs-on: ubuntu-latest
-    runs-on: macos-latest
-    strategy:
-      matrix:
-        api-level: [29]
-        target: [default]
+    runs-on: ubuntu-latest
+    #runs-on: macos-latest
+#    strategy:
+#      matrix:
+#        api-level: [29]
+#        target: [default]
     steps:
     # チェックアウト
     - uses: actions/checkout@v2
@@ -58,7 +58,7 @@ jobs:
       uses: reactivecircus/android-emulator-runner@v2
       with:
         api-level: 29
-        arch: x86_64
+#        arch: x86_64
         script: ./gradlew jacocoTestReports
 
     # コードカバレッジをCodecovへアップロード
