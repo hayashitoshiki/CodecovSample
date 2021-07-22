@@ -24,6 +24,9 @@ class HomeViewModel : ViewModel() {
     }
 
     fun get4() : Int {
+        if (a == 3) {
+            return 55
+        }
         return 4
     }
 
