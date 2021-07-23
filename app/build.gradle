@@ -6,7 +6,7 @@ apply from: "./jacoco.gradle"
 
 android {
     defaultConfig {
-        applicationId "com.myapp.chatmemo"
+        applicationId "com.example.codecovsample"
     }
 }
 
