@@ -4,6 +4,12 @@ plugins {
 }
 apply from: "./jacoco.gradle"
 
+android {
+    defaultConfig {
+        applicationId "com.myapp.chatmemo"
+    }
+}
+
 
 dependencies {
 
